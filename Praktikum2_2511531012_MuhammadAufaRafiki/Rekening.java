@@ -1,0 +1,73 @@
+package Praktikum2_2511531012_MuhammadAufaRafiki;
+
+import java.util.ArrayList;
+
+public class Rekening {
+	String nomorRekening;
+	String namaPemilik;
+	double saldo;
+	
+	//Implementasi asosiasi (1-to-many)
+	ArrayList<Transaksi> riwayatTransaksi;
+	
+	public Rekening(String nomor, String nama, double saldoAwal) {
+		nomorRekening = nomor;
+		namaPemilik = nama;
+		saldo = saldoAwal;
+		
+		//wajib menginisialisasi ArrayList di dalam Construktor agar tidak NullPointerExcepti0n
+		this.riwayatTransaksi = new ArrayList<>();
+		
+		System.out.println("Rekening atas nama " + namaPemilik + "berhasil dibuat dengan saldo Rp" + saldo);
+	}
+	
+	public void setorTunai(double nominal) {
+		if (nominal > 0) {
+			saldo += nominal;
+			//merekam riwayat 
+			String idTrx = "TRS-S-" + System.currentTimeMillis();
+			Transaksi trxBaru = new Transaksi(idTrx, "Kredit", nominal);
+			riwayatTransaksi.add(trxBaru);
+			
+			System.out.println("Setor tunai Rp" + nominal + " berhasil. Saldo saat ini: Rp" + saldo);
+		} else {
+			System.out.println("Gagal: Nominal setor harus lebih dari 0!");
+		}
+	}
+	
+	public void cekInformasi() {
+		System.out.println("--- INFO REKENING ---");
+		System.out.println("No. Rekening : " + nomorRekening);
+		System.out.println("Nama Pemilik : " + namaPemilik);
+		System.out.println("Saldo Akhir  : Rp" + saldo);
+		System.out.println("---------------------");
+	}
+	
+	public void tarikTunai(double nominal) {
+		if (nominal < 10000){
+			System.out.println("Gagal: Nominal tarik tunai harus lebih dari 10000!");
+		} else if (nominal > saldo) {
+			System.out.println( "Transaksi Gagal: Saldo tidak mencukupi. Saldo Anda: Rp" + saldo);
+		} else {
+			saldo -= nominal;
+			
+			String idTrx = "TRS-T-" + System.currentTimeMillis();
+			Transaksi trxBaru = new Transaksi(idTrx, "Debit ", nominal);
+			riwayatTransaksi.add(trxBaru);
+			
+			System.out.println("Tarik tunai Rp" + nominal + " berhasil. Saldo saat ini: Rp" + saldo);
+			
+		}
+	}
+	
+	public void cetakMutasi() {
+		System.out.println("\n--- Riwayat Transaksi ---");
+		if (riwayatTransaksi.isEmpty()) {
+			System.out.println("Belum ada transaksi pada rekening ini");
+		} else {
+			for (Transaksi trx : riwayatTransaksi) {
+				trx.cetakDetail();
+			}
+		}
+	}
+}
