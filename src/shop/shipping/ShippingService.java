@@ -12,10 +12,10 @@ public abstract class ShippingService {
 
     public String getName() { return name; }
 
-    /** Rate in rupiah per started kilogram. */
+    /** Tarif per kilogram dimulai (dibulatkan ke atas). */
     protected abstract long ratePerKg();
 
-    /** Weight is rounded up: 700 g -> 1 kg, 1001 g -> 2 kg. */
+    /** Rumus ongkir dikunci dengan final agar tidak bisa di-override oleh kurir manapun. */
     public final long calculateCost(int weightGrams) {
         if (weightGrams <= 0) {
             return 0;

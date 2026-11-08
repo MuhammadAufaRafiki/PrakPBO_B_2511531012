@@ -11,4 +11,10 @@ public interface InstallmentPayment extends PaymentMethod {
         }
         return (amount + months - 1L) / months;
     }
+
+    //Policy default untuk cicilan
+    default String policy() {
+        return "Cicilan maksimal " + maxInstallmentMonths() + " bulan";
+    }
+    
 }

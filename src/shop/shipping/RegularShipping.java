@@ -10,3 +10,4 @@ public class RegularShipping extends ShippingService {
         return 10000;
     }
 }
+
